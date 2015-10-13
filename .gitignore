@@ -194,3 +194,8 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# additional entries
+artifacts/
+wwwroot/lib/
+wwwroot/css/
