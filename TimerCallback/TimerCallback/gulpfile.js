@@ -19,6 +19,10 @@ gulp.task("copy", function () {
     gulp.src("./bower_components/backbone/backbone.js").pipe(gulp.dest("./wwwroot/lib"));
 });
 
+gulp.task("devJsCopy", function () {
+    gulp.src("./src/appJs/**").pipe(gulp.dest("./wwwroot/appJs/"));
+});
+
 gulp.task("less", function () {
     gulp.src("./src/less/custom.less")
     .pipe(less({ compress: true }))
@@ -27,4 +31,5 @@ gulp.task("less", function () {
 
 gulp.task("watch", function () {
     gulp.watch("./src/less/*.less", ["less"]);
+    gulp.watch("./src/appJs/*.js", ["devJsCopy"]);
 });

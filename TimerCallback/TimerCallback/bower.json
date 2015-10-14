@@ -1,9 +1,13 @@
 {
   "name": "TimerCallback",
   "private": true,
-  "devDependencies": {
+  "dependencies": {
     "backbone": "^1.2.3",
     "moment": "^2.10.6",
     "bootstrap": "^3.3.5"
+  },
+  "devDependencies": {
+    "jasmine": "^2.3.4",
+    "jasmine-jquery": "^2.1.1"
   }
 }

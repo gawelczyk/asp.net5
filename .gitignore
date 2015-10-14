@@ -199,3 +199,5 @@ FakesAssemblies/
 artifacts/
 wwwroot/lib/
 wwwroot/css/
+/TimerCallback/TimerCallback/wwwroot/css
+/TimerCallback/TimerCallback/wwwroot/lib
