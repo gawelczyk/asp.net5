@@ -1,22 +1,28 @@
 
 var TimerCallbackView = Backbone.View.extend({
     initialize: function () {
-        //var self = this;
-        //this.interval = setInterval(function () {
-        //    self.render();
-        //}, 500);
     },
     events: {
     },
+    autoRender: function () {
+        var self = this;
+        this.interval = setInterval(function () {
+            self.render();
+            console.debug('time left', self.model.getTimeLeft() / 1000)
+            if (self.model.getTimeLeft() <= 0)
+                clearInterval(self.interval);
+        }, 500);
+        return this.render();
+    },
     render: function () {
-        this.$el.text(this.model.getEndDate().fromNow());
+        this.$el.text(this.model.getTimeLeft() / 1000);
         return this;
     }
 });
 
 var TimerCallbackModel = Backbone.Model.extend({
     initialize: function () {
-        this.endDate = moment().add(this.getMiliseconds(), 'ms');
+        this.endDate = new Date(new Date().getTime() + this.getMiliseconds());
     },
     startTimer: function () {
         if (this.timeout)
@@ -29,6 +35,9 @@ var TimerCallbackModel = Backbone.Model.extend({
     },
     getEndDate: function () {
         return this.endDate;
+    },
+    getTimeLeft: function () {
+        return this.getEndDate().getTime() - new Date().getTime();
     }
 });
 
@@ -46,7 +55,7 @@ var TimerCallbackApp = function (secondsToCall, callBack, element) {
     this.start = function () {
         this.model.startTimer();
         if (this.view)
-            this.view.render();
+            this.view.autoRender();
     };
 
 };
