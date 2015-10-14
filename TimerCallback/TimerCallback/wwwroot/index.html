@@ -10,9 +10,44 @@
 <body>
 
     <div class="container">
-        <header class="page-header">
+        <header class="page-header h1">
             TimerCallback examples
         </header>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Sample timer</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-1">
+                <div id="timer1"></div>
+            </div>
+            <div class="col-sm-3"><button id="timer1reset">reset timer</button></div>
+            <div class="col-sm-7">
+                <div id="finished1"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Sample timer two</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-1">
+                <div id="timer2">...</div>
+            </div>
+            <div class="col-sm-3">
+                Set time in seconds 
+                <input  id="timer2value" min="1" required type="number" value="15" class="form-control" />
+            </div>
+            <div class="col-sm-3"><button id="timer2start">start timer</button><button id="timer2reset">reset timer</button></div>
+            <div class="col-sm-5">
+                <div id="finished2"></div>
+            </div>
+        </div>
+
     </div>
 
     <script src="lib/jquery.min.js"></script>
@@ -21,5 +56,35 @@
     <script src="lib/underscore.js"></script>
     <script src="lib/backbone.js"></script>
     <script src="appjs/TimerCallback.js"></script>
+
+    <script type="text/javascript">
+
+        var app1 = new TimerCallbackApp(20, function () {
+            $('#finished1').html("finished!!");
+        }, '#timer1');
+        app1.start();
+
+        $('#timer1reset').on('click', function () {
+            app1.start();
+            $('#finished1').html("");
+        });
+
+
+        var app2 = new TimerCallbackApp($('#timer2value').val(), function () {
+            $('#finished2').html("finished!!");
+        }, '#timer2');
+        app1.start();
+
+        $('#timer2start').on('click', function () {
+            app2.start();
+            $('#finished2').html("");
+            $('#timer2value').prop("readonly", true);
+        });
+
+        $('#timer2reset').on('click', function () {
+            app2.start();
+            $('#finished2').html("");
+        });
+    </script>
 </body>
 </html>

@@ -43,8 +43,9 @@ describe("TimerCallback", function () {
 
         beforeEach(function () {
             callback = jasmine.createSpy('aqq');
-            app = new TimerCallbackApp(secondsToCall, callback);
             jasmine.clock().install();
+            jasmine.clock().mockDate(new Date());
+            app = new TimerCallbackApp(secondsToCall, callback);
             startDate = new Date();
         });
 
@@ -71,6 +72,22 @@ describe("TimerCallback", function () {
             expect(round2Sec(app.model.getTimeLeft())).toEqual(secondsToCall);
         });
 
+        it("getTimeLeft returns correct value after timer restart", function () {
+            console.log("getTimeLeft", app.model.getTimeLeft());
+            app.start();
+            //expect(app.model.getTimeLeft).toBeTruthy();
+            //expect(app.model.getEndDate().isSame(new Date().getTime() + secondsToCall * 1000, 'second')).toBe(true);
+            expect(round2Sec(app.model.getTimeLeft())).toEqual(secondsToCall);
+
+            jasmine.clock().tick(2000);
+            console.log("getTimeLeft", app.model.getTimeLeft());
+            expect(round2Sec(app.model.getTimeLeft())).toEqual(secondsToCall - 2);
+            app.start();
+            expect(round2Sec(app.model.getTimeLeft())).toEqual(secondsToCall);
+            console.log("getTimeLeft", app.model.getTimeLeft());
+
+        });
+
         it("callback is called synchronously after timer", function () {
             app.start();
 
@@ -87,7 +104,7 @@ describe("TimerCallback", function () {
 
         });
 
-        it("calling start again blocks callback call and resets timer", function () {
+        it("calling start again blocks callback call", function () {
             app.start();
 
             expect(callback).not.toHaveBeenCalled();
@@ -96,6 +113,7 @@ describe("TimerCallback", function () {
             expect(callback).not.toHaveBeenCalled();
 
             app.start();
+
 
             jasmine.clock().tick(secondsToCall * 500);
             expect(callback).not.toHaveBeenCalled();
@@ -104,6 +122,24 @@ describe("TimerCallback", function () {
             expect(callback).not.toHaveBeenCalled();
 
             jasmine.clock().tick(1);
+            expect(callback).toHaveBeenCalled();
+
+        });
+
+        it("calling start again resets timer", function () {
+            app.start();
+            jasmine.clock().tick(secondsToCall * 500);
+            expect(callback).not.toHaveBeenCalled();
+
+            app.start();
+
+            expect(round2Sec(app.model.getTimeLeft())).toEqual(secondsToCall);
+            expect(callback).not.toHaveBeenCalled();
+
+            jasmine.clock().tick(secondsToCall * 500);
+            expect(callback).not.toHaveBeenCalled();
+
+            jasmine.clock().tick(secondsToCall * 500);
             expect(callback).toHaveBeenCalled();
 
         });
@@ -181,6 +217,20 @@ describe("TimerCallback", function () {
             jasmine.clock().tick(5000);
             expect(app.view.render.calls.count()).toEqual(0);
         });
+
+        it('view refresh remining time after timer restart', function () {
+
+            app.start();
+            jasmine.clock().tick(4 * 1000);
+            console.log('time left ', app.model.getEndDate(), $(domElement).text());
+            expect(Math.round($(domElement).text())).toEqual(secondsToCall - 4);
+
+            app.start();
+            console.log('time left ', app.model.getEndDate(), $(domElement).text());
+            expect(Math.round($(domElement).text())).toEqual(secondsToCall);
+
+        });
+
     });
 });
 
