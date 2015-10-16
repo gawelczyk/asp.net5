@@ -13,6 +13,11 @@ describe("A suite", function () {
     it("contains spec with an expectation", function () {
         expect(true).toBe(true);
     });
+
+    //it("failing spec with an expectation", function () {
+    //    expect(true).toBe(false);
+    //});
+
 });
 
 describe("TimerCallback", function () {
@@ -186,7 +191,7 @@ describe("TimerCallback", function () {
         it('view displays remining time', function () {
             app.start();
             expect(Math.round($(domElement).text())).toEqual(secondsToCall);
-            console.log('info', $(domElement), app.model.getEndDate(), $(domElement).text());
+            //console.log('info', $(domElement), app.model.getEndDate(), $(domElement).text());
         });
 
         it('view displays refresh remining time each second', function () {
