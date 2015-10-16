@@ -39,12 +39,17 @@ gulp.task('test', function (done) {
     new server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true,
+        client: { captureConsole: false },
         browsers: ['Firefox', 'IE_no_addons']
-    }, done).start();
+    }, function () {
+        done();
+    }).start();
 });
 
 gulp.task('tdd', function (done) {
     new server({
         configFile: __dirname + '/karma.conf.js'
-    }, done).start();
+    }, function () {
+        done();
+    }).start();
 });
