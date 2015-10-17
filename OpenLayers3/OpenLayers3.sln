@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{76268B40-07E1-4C52-8D9F-DF17BD420A92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1264818-371C-4AAF-B6FD-3E2F5CDBEBDA}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OpenLayers3", "src\OpenLayers3\OpenLayers3.xproj", "{321A01ED-75C2-4122-A2B8-D96D997637C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{321A01ED-75C2-4122-A2B8-D96D997637C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{321A01ED-75C2-4122-A2B8-D96D997637C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{321A01ED-75C2-4122-A2B8-D96D997637C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{321A01ED-75C2-4122-A2B8-D96D997637C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{321A01ED-75C2-4122-A2B8-D96D997637C5} = {76268B40-07E1-4C52-8D9F-DF17BD420A92}
+	EndGlobalSection
+EndGlobal

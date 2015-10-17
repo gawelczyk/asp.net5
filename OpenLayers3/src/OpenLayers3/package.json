@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "name": "OL3",
+  "private": true,
+  "devDependencies": {
+    "bower": "^1.5.3",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.6",
+    "gulp-watch": "^4.3.5",
+    "gulp-less": "^3.0.3"
+  },
+  "dependencies": {
+    "openlayers": "^3.10.1"
+  }
+}
