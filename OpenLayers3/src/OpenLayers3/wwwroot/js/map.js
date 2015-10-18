@@ -27,16 +27,24 @@ var nasaBluemarble = {
     })
 };
 
+var mapbox = new ol.layer.Tile({
+    source: new ol.source.TileJSON({
+        url: 'http://api.tiles.mapbox.com/v3/mapbox.geography-class.jsonp'
+    })
+});
+
+var vectorSource = new ol.source.Vector({
+    url: '/data/grid.json',
+    format: new ol.format.GeoJSON()
+});
+
 var osm = {
     layers: [new ol.layer.Tile({
         source: new ol.source.OSM()
     }),
     new ol.layer.Vector({
         title: 'grid',
-        source: new ol.source.Vector({
-            url: '/data/grid.json',
-            format: new ol.format.GeoJSON()
-        }),
+        source: vectorSource,
         style: new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'blue',
@@ -53,17 +61,43 @@ var osm = {
     })
 };
 
+var selectionStyle = new ol.style.Style({
+    fill: new ol.style.Fill({
+        color: 'rgba(255, 0, 0, 0.3)'
+    }),
+    stroke: new ol.style.Stroke({
+        color: '#000000'
+    })
+});
+
+var dragBox = new ol.interaction.DragBox({
+    condition: ol.events.condition.platformModifierKeyOnly,
+    style: selectionStyle
+});
+
+dragBox.on('boxend', function (e) {
+    // features that intersect the box are added to the collection of
+    // selected features
+    var extent = dragBox.getGeometry().getExtent();
+    vectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
+        selectedFeatures.push(feature);
+    });
+});
+
+// clear selection when drawing a new box and when clicking on the map
+dragBox.on('boxstart', function (e) {
+    selectedFeatures.clear();
+});
+
+
+var select = new ol.interaction.Select({
+    style: selectionStyle
+});
+var selectedFeatures = select.getFeatures();
+
 var interactions = ol.interaction.defaults().extend([
-         new ol.interaction.Select({
-             style: new ol.style.Style({
-                 fill: new ol.style.Fill({
-                     color: 'rgba(255, 0, 0, 0.3)'
-                 }),
-                 stroke: new ol.style.Stroke({
-                     color: '#000000'
-                 })
-             })
-         })
+         select,
+         dragBox
 ]);
 
 var controls = ol.control.defaults().extend([new ol.control.ScaleLine()]);
