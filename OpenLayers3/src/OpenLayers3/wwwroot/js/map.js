@@ -38,23 +38,51 @@ var vectorSource = new ol.source.Vector({
     format: new ol.format.GeoJSON()
 });
 
-var osm = {
-    layers: [new ol.layer.Tile({
-        source: new ol.source.OSM()
+
+var style1 = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: 'blue',
+        width: 1
     }),
-    new ol.layer.Vector({
-        title: 'grid',
-        source: vectorSource,
-        style: new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: 'blue',
-                width: 1
-            }),
-            fill: new ol.style.Fill({
-                color: 'rgba(0, 0, 255, 0.1)'
-            })
-        })
-    })],
+    fill: new ol.style.Fill({
+        color: 'rgba(0, 0, 255, 0.1)'
+    })
+});
+
+var style2 = [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: 'blue',
+        width: 1
+    }),
+    fill: new ol.style.Fill({
+        color: 'rgba(0, 0, 255, 0.1)'
+    })
+}), new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: 'green',
+        width: 1
+    }),
+    fill: new ol.style.Fill({
+        color: 'rgba(0, 255, 0, 0.1)'
+    })
+})];
+
+
+var osm = {
+    layers: [
+        new ol.layer.Tile({
+            source: new ol.source.OSM()
+        }),
+        new ol.layer.Vector({
+            title: 'grid',
+            source: vectorSource,
+            style: function (feature, resolution) {
+                //console.log('style function',arguments);
+                return feature.get('enabled') == 1 ? [style2[0]] : [style2[1]];
+                //return [style2[0]];
+            }
+            //style: style2[1]    
+        })],
     view: new ol.View({
         center: [2219471.678, 6456956.818],
         zoom: 13
@@ -93,11 +121,33 @@ dragBox.on('boxstart', function (e) {
 var select = new ol.interaction.Select({
     style: selectionStyle
 });
+
 var selectedFeatures = select.getFeatures();
+
+var toggleEnabled = new ol.interaction.DragBox({
+    condition: ol.events.condition.always,
+    style: selectionStyle
+});
+toggleEnabled.setActive(false);
+
+toggleEnabled.on('boxend', function (e) {
+    console.log(arguments);
+
+    var extent = e.target.getGeometry().getExtent();
+    vectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
+        //console.log(feature);
+        feature.set("enabled", !feature.get('enabled'));
+    });
+});
+
+$('#toggleEnabled').on('change', function () {
+    toggleEnabled.setActive($('#toggleEnabled').prop('checked'));
+});
 
 var interactions = ol.interaction.defaults().extend([
          select,
-         dragBox
+         dragBox,
+         toggleEnabled
 ]);
 
 var controls = ol.control.defaults().extend([new ol.control.ScaleLine(),
