@@ -129,9 +129,10 @@ var toggleEnabled = new ol.interaction.DragBox({
     style: selectionStyle
 });
 toggleEnabled.setActive(false);
+$('#toggleEnabled').prop('checked', false);
 
 toggleEnabled.on('boxend', function (e) {
-    console.log(arguments);
+    //console.log(arguments);
 
     var extent = e.target.getGeometry().getExtent();
     vectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
